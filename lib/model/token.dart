@@ -1,6 +1,10 @@
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:mforms/model/user.dart';
 
+part 'token.g.dart';
+
+@JsonSerializable()
 class Token extends Equatable {
   final String token;
   final User user;
@@ -10,7 +14,7 @@ class Token extends Equatable {
   @override
   List<Object?> get props => [token];
 
-  factory Token.fromJson(Map<String, dynamic> json) {
-    return Token(token: json['token'], user: User.fromJson(json['user']));
-  }
+  factory Token.fromJson(Map<String, dynamic> json) => _$TokenFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TokenToJson(this);
 }

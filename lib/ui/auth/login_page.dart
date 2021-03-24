@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:mforms/cubit/login_cubit.dart';
+import 'package:mforms/component/loading_dialog.dart';
+import 'package:mforms/cubit/cubits.dart';
 import 'package:mforms/util/validator.dart';
 
 class LoginPage extends StatefulWidget {
@@ -125,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState?.save();
                         if (email != null && password != null) {
-                          BlocProvider.of<LoginCubit>(context)
+                          BlocProvider.of<AuthCubit>(context)
                               .login(email!, password!);
                         }
                       }
@@ -158,34 +159,19 @@ class _LoginPageState extends State<LoginPage> {
                   child: Text('Daftar'),
                 ),
               ),
-              BlocListener<LoginCubit, LoginState>(
+              BlocListener<AuthCubit, BaseState>(
                 listener: (context, state) {
-                  if (state is LoginSuccess) {
-                    Fluttertoast.showToast(msg: state.token!.user.name);
+                  if (state is SuccessState) {
+                    Fluttertoast.showToast(msg: state.data!.user.name);
                     Get.back();
-                  } else if (state is LoginError) {
+                  } else if (state is ErrorState) {
                     Fluttertoast.showToast(msg: state.message);
                     Get.back();
                   }
-                  if (state is LoginLoading) {
+                  if (state is LoadingState) {
                     showDialog(
                       context: context,
-                      builder: (context) {
-                        return SimpleDialog(
-                          children: [
-                            Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                            SizedBox(height: 16),
-                            Text(
-                              'Loading...',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w700),
-                            ),
-                          ],
-                        );
-                      },
+                      builder: (context) => LoadingDialog(),
                     );
                   }
                 },

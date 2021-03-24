@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:mforms/cubit/cubits.dart';
+import 'package:mforms/repository/local/local_data_source.dart';
 import 'package:mforms/repository/mforms_repository.dart';
 import 'package:mforms/repository/remote/remote_data_source.dart';
 import 'package:mforms/ui/ui.dart';
@@ -13,13 +14,14 @@ void main() {
 
 class MyApp extends StatelessWidget {
   final MFormsRepository _repository = new MFormsRepository(
-      remoteDataSource: new RemoteDataSource(httpClient: Client()));
+      localDataSource: new LocalDataSource(),
+      remoteDataSource: new RemoteDataSource(client: Client()));
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<LoginCubit>(
-          create: (_) => LoginCubit(repository: _repository),
+        BlocProvider<AuthCubit>(
+          create: (_) => AuthCubit(repository: _repository),
         ),
       ],
       child: GetMaterialApp(

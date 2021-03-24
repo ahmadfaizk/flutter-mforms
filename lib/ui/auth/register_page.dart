@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:mforms/component/loading_dialog.dart';
+import 'package:mforms/cubit/cubits.dart';
 import 'package:mforms/util/validator.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -9,6 +14,9 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   bool _isHidePassword = true;
   final _formKey = GlobalKey<FormState>();
+  String? name;
+  String? email;
+  String? password;
 
   void _togglePasswordVisibility() {
     setState(() {
@@ -63,6 +71,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     }
                     return null;
                   },
+                  onSaved: (newValue) => name = newValue,
                 ),
               ),
               Padding(
@@ -87,6 +96,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     }
                     return null;
                   },
+                  onSaved: (newValue) => email = newValue,
                 ),
               ),
               Padding(
@@ -114,6 +124,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     }
                     return null;
                   },
+                  onSaved: (newValue) => password = newValue,
                 ),
               ),
               Padding(
@@ -151,13 +162,33 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        //Fluttertoast.showToast(msg: 'Daftar Success');
+                        _formKey.currentState?.save();
+                        BlocProvider.of<AuthCubit>(context)
+                            .register(name!, email!, password!);
                       }
                     },
                     child: Text('Daftar'),
                   ),
                 ),
               ),
+              BlocListener<AuthCubit, BaseState>(
+                listener: (context, state) {
+                  if (state is SuccessState) {
+                    Fluttertoast.showToast(msg: state.data!.user.name);
+                    Get.back();
+                  } else if (state is ErrorState) {
+                    //Fluttertoast.showToast(msg: state.message);
+                    Get.back();
+                  }
+                  if (state is LoadingState) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => LoadingDialog(),
+                    );
+                  }
+                },
+                child: Container(),
+              )
             ],
           ),
         ),

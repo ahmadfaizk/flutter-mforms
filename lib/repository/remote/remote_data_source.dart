@@ -6,20 +6,34 @@ import 'package:mforms/model/token.dart';
 
 class RemoteDataSource {
   final String _baseUrl = 'http://192.168.10.4:8000/api/v1';
-  final Client _httpClient;
+  final Client _client;
 
-  const RemoteDataSource({required Client httpClient})
-      : _httpClient = httpClient;
+  const RemoteDataSource({required Client client}) : _client = client;
 
   Future<SingleResponse<Token>> login(String email, String password) async {
     Uri url = Uri.parse("$_baseUrl/login");
-    var result = await _httpClient
-        .post(url, body: {"email": email, "password": password});
-    var object = json.decode(result.body);
-    if (object['data'] != null) {
-      object['data'] = Token.fromJson(object['data']);
-    }
+    var result =
+        await _client.post(url, body: {"email": email, "password": password});
+    return SingleResponse<Token>.fromJson(
+      json.decode(result.body),
+      (json) => Token.fromJson(json as Map<String, dynamic>),
+    );
+  }
 
-    return SingleResponse.fromJson(object);
+  Future<SingleResponse<Token>> register(
+    String name,
+    String email,
+    String password,
+  ) async {
+    Uri url = Uri.parse("$_baseUrl/register");
+    var result = await _client.post(url, body: {
+      'name': name,
+      'email': email,
+      'password': password,
+    });
+    return SingleResponse<Token>.fromJson(
+      json.decode(result.body),
+      (json) => Token.fromJson(json as Map<String, dynamic>),
+    );
   }
 }

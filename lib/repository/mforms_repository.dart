@@ -1,16 +1,44 @@
 import 'package:mforms/model/token.dart';
 import 'package:mforms/model/single_response.dart';
+import 'package:mforms/repository/local/local_data_source.dart';
 import 'package:mforms/repository/mforms_data_source.dart';
 import 'package:mforms/repository/remote/remote_data_source.dart';
 
 class MFormsRepository implements MFormsDataSource {
   late RemoteDataSource _remoteDataSource;
+  late LocalDataSource _localDataSource;
 
-  MFormsRepository({required RemoteDataSource remoteDataSource})
-      : this._remoteDataSource = remoteDataSource;
+  MFormsRepository({
+    required LocalDataSource localDataSource,
+    required RemoteDataSource remoteDataSource,
+  }) {
+    this._remoteDataSource = remoteDataSource;
+    this._localDataSource = localDataSource;
+  }
 
   @override
   Future<SingleResponse<Token>> login(String email, String password) async {
     return await _remoteDataSource.login(email, password);
+  }
+
+  @override
+  Future<String?> getToken() async {
+    return await _localDataSource.getToken();
+  }
+
+  @override
+  Future<bool> removeSession() async {
+    return await _localDataSource.removeSession();
+  }
+
+  @override
+  Future<bool> saveToken(String token) async {
+    return await _localDataSource.saveToken(token);
+  }
+
+  @override
+  Future<SingleResponse<Token>> register(
+      String name, String email, String password) async {
+    return await _remoteDataSource.register(name, email, password);
   }
 }
