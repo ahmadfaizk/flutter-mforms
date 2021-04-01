@@ -174,7 +174,8 @@ class _RegisterPageState extends State<RegisterPage> {
               BlocListener<AuthCubit, BaseState>(
                 listener: (context, state) {
                   if (state is SuccessState) {
-                    Fluttertoast.showToast(msg: state.data!.user.name);
+                    Get.offAllNamed('home');
+                    //Fluttertoast.showToast(msg: state.data!.user.name);
                     Get.back();
                   } else if (state is ErrorState) {
                     //Fluttertoast.showToast(msg: state.message);

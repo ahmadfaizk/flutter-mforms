@@ -14,6 +14,9 @@ class LoadingState extends BaseState {}
 class SuccessState<T> extends BaseState {
   final T? data;
   const SuccessState({this.data});
+
+  @override
+  List<Object> get props => [data as Object];
 }
 
 class ErrorState extends BaseState {

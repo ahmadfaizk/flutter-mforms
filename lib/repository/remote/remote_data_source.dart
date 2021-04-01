@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart';
+import 'package:mforms/model/models.dart';
 import 'package:mforms/model/single_response.dart';
 import 'package:mforms/model/token.dart';
 
@@ -35,5 +37,13 @@ class RemoteDataSource {
       json.decode(result.body),
       (json) => Token.fromJson(json as Map<String, dynamic>),
     );
+  }
+
+  Future<SingleResponse<User>> getUser(String token) async {
+    Uri url = Uri.parse("$_baseUrl/user");
+    var result = await _client
+        .get(url, headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+    return SingleResponse<User>.fromJson(json.decode(result.body),
+        (json) => User.fromJson(json as Map<String, dynamic>));
   }
 }

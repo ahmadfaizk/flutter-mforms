@@ -1,5 +1,6 @@
 import 'package:mforms/model/token.dart';
 import 'package:mforms/model/single_response.dart';
+import 'package:mforms/model/user.dart';
 import 'package:mforms/repository/local/local_data_source.dart';
 import 'package:mforms/repository/mforms_data_source.dart';
 import 'package:mforms/repository/remote/remote_data_source.dart';
@@ -40,5 +41,11 @@ class MFormsRepository implements MFormsDataSource {
   Future<SingleResponse<Token>> register(
       String name, String email, String password) async {
     return await _remoteDataSource.register(name, email, password);
+  }
+
+  @override
+  Future<SingleResponse<User>> getUser() async {
+    var token = await _localDataSource.getToken();
+    return await _remoteDataSource.getUser(token ?? '');
   }
 }

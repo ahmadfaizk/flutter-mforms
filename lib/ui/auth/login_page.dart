@@ -162,8 +162,9 @@ class _LoginPageState extends State<LoginPage> {
               BlocListener<AuthCubit, BaseState>(
                 listener: (context, state) {
                   if (state is SuccessState) {
-                    Fluttertoast.showToast(msg: state.data!.user.name);
+                    // Fluttertoast.showToast(msg: state.data!.user.name);
                     Get.back();
+                    Get.offAllNamed('home');
                   } else if (state is ErrorState) {
                     Fluttertoast.showToast(msg: state.message);
                     Get.back();

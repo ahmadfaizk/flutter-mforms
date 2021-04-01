@@ -20,9 +20,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthCubit>(
-          create: (_) => AuthCubit(repository: _repository),
-        ),
+        BlocProvider<AuthCubit>(create: (_) => AuthCubit(_repository)),
+        BlocProvider<SplashCubit>(create: (_) => SplashCubit(_repository)),
+        BlocProvider<ProfileCubit>(create: (_) => ProfileCubit(_repository))
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
           GetPage(name: '/', page: () => SplashScreenPage()),
           GetPage(name: 'login', page: () => LoginPage()),
           GetPage(name: 'register', page: () => RegisterPage()),
+          GetPage(name: 'home', page: () => HomePage())
         ],
       ),
     );
