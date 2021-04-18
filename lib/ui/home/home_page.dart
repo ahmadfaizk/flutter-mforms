@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mforms/ui/group/group_page.dart';
 import 'package:mforms/ui/ui.dart';
 
 class HomePage extends StatefulWidget {
@@ -8,7 +9,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  List<Widget> _widgets = [Text('Grub'), Text('Form'), ProfilePage()];
+  List<Widget> _widgets = [GroupPage(), Text('Form'), ProfilePage()];
 
   void _onItemTapped(int index) {
     setState(() {

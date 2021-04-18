@@ -22,7 +22,8 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<AuthCubit>(create: (_) => AuthCubit(_repository)),
         BlocProvider<SplashCubit>(create: (_) => SplashCubit(_repository)),
-        BlocProvider<ProfileCubit>(create: (_) => ProfileCubit(_repository))
+        BlocProvider<ProfileCubit>(create: (_) => ProfileCubit(_repository)),
+        BlocProvider<GroupCubit>(create: (_) => GroupCubit(_repository)),
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,

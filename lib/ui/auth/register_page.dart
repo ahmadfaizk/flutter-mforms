@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:mforms/component/loading_dialog.dart';
 import 'package:mforms/cubit/cubits.dart';
@@ -175,10 +174,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 listener: (context, state) {
                   if (state is SuccessState) {
                     Get.offAllNamed('home');
-                    //Fluttertoast.showToast(msg: state.data!.user.name);
                     Get.back();
                   } else if (state is ErrorState) {
-                    //Fluttertoast.showToast(msg: state.message);
                     Get.back();
                   }
                   if (state is LoadingState) {

@@ -3,11 +3,12 @@ import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:mforms/model/models.dart';
+import 'package:mforms/model/multi_response.dart';
 import 'package:mforms/model/single_response.dart';
 import 'package:mforms/model/token.dart';
 
 class RemoteDataSource {
-  final String _baseUrl = 'http://192.168.10.4:8000/api/v1';
+  final String _baseUrl = 'http://192.168.43.201:8000/api/v1';
   final Client _client;
 
   const RemoteDataSource({required Client client}) : _client = client;
@@ -32,6 +33,9 @@ class RemoteDataSource {
       'name': name,
       'email': email,
       'password': password,
+      'password_confirmation': password,
+    }, headers: {
+      HttpHeaders.acceptHeader: 'application/json'
     });
     return SingleResponse<Token>.fromJson(
       json.decode(result.body),
@@ -43,7 +47,19 @@ class RemoteDataSource {
     Uri url = Uri.parse("$_baseUrl/user");
     var result = await _client
         .get(url, headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
-    return SingleResponse<User>.fromJson(json.decode(result.body),
-        (json) => User.fromJson(json as Map<String, dynamic>));
+    return SingleResponse<User>.fromJson(
+      json.decode(result.body),
+      (json) => User.fromJson(json as Map<String, dynamic>),
+    );
+  }
+
+  Future<MultiResponse<Group>> getAllGroups(String token) async {
+    Uri url = Uri.parse("$_baseUrl/group");
+    var result = await _client
+        .get(url, headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+    return MultiResponse<Group>.fromJson(
+      json.decode(result.body),
+      (json) => Group.fromJson(json as Map<String, dynamic>),
+    );
   }
 }
