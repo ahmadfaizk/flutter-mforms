@@ -7,6 +7,9 @@ abstract class MFormsDataSource {
       String name, String email, String password);
   Future<SingleResponse<User>> getUser();
   Future<MultiResponse<Group>> getAllGroups();
+  Future<SingleResponse<Group>> subscribeGroup(String code);
+  Future<MultiResponse<Form>> getAllForms();
+  Future<SingleResponse<Form>> getForm(int id);
   Future<bool> saveToken(String token);
   Future<String?> getToken();
   Future<bool> removeSession();

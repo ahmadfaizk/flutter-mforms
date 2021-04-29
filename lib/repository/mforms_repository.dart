@@ -1,3 +1,4 @@
+import 'package:mforms/model/form.dart';
 import 'package:mforms/model/group.dart';
 import 'package:mforms/model/multi_response.dart';
 import 'package:mforms/model/token.dart';
@@ -48,12 +49,30 @@ class MFormsRepository implements MFormsDataSource {
   @override
   Future<SingleResponse<User>> getUser() async {
     var token = await _localDataSource.getToken();
-    return await _remoteDataSource.getUser(token ?? '');
+    return await _remoteDataSource.getUser(token);
   }
 
   @override
   Future<MultiResponse<Group>> getAllGroups() async {
     var token = await _localDataSource.getToken();
-    return await _remoteDataSource.getAllGroups(token ?? '');
+    return await _remoteDataSource.getAllGroups(token);
+  }
+
+  @override
+  Future<SingleResponse<Group>> subscribeGroup(String code) async {
+    var token = await _localDataSource.getToken();
+    return await _remoteDataSource.subscribeGroup(token, code);
+  }
+
+  @override
+  Future<MultiResponse<Form>> getAllForms() async {
+    var token = await _localDataSource.getToken();
+    return await _remoteDataSource.getAllForms(token);
+  }
+
+  @override
+  Future<SingleResponse<Form>> getForm(int id) async {
+    var token = await _localDataSource.getToken();
+    throw await _remoteDataSource.getForm(token, id);
   }
 }
