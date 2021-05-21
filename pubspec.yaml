@@ -39,6 +39,7 @@ dev_dependencies:
   build_runner: ^2.0.1
   json_serializable: ^4.1.0
 
+# flutter pub run build_runner build
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.

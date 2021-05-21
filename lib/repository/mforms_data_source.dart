@@ -8,8 +8,8 @@ abstract class MFormsDataSource {
   Future<SingleResponse<User>> getUser();
   Future<MultiResponse<Group>> getAllGroups();
   Future<SingleResponse<Group>> subscribeGroup(String code);
-  Future<MultiResponse<Form>> getAllForms();
-  Future<SingleResponse<Form>> getForm(int id);
+  Future<MultiResponse<FormDynamic>> getAllForms();
+  Future<SingleResponse<FormDynamic>> getForm(int id);
   Future<bool> saveToken(String token);
   Future<String?> getToken();
   Future<bool> removeSession();

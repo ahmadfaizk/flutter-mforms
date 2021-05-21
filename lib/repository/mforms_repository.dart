@@ -1,4 +1,4 @@
-import 'package:mforms/model/form.dart';
+import 'package:mforms/model/form_dynamic.dart';
 import 'package:mforms/model/group.dart';
 import 'package:mforms/model/multi_response.dart';
 import 'package:mforms/model/token.dart';
@@ -65,13 +65,13 @@ class MFormsRepository implements MFormsDataSource {
   }
 
   @override
-  Future<MultiResponse<Form>> getAllForms() async {
+  Future<MultiResponse<FormDynamic>> getAllForms() async {
     var token = await _localDataSource.getToken();
     return await _remoteDataSource.getAllForms(token);
   }
 
   @override
-  Future<SingleResponse<Form>> getForm(int id) async {
+  Future<SingleResponse<FormDynamic>> getForm(int id) async {
     var token = await _localDataSource.getToken();
     throw await _remoteDataSource.getForm(token, id);
   }

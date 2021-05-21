@@ -14,7 +14,6 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   @override
   void initState() {
     super.initState();
-    //BlocProvider.of<SplashCubit>(context).init();
     BlocProvider.of<SplashCubit>(context).start();
   }
 

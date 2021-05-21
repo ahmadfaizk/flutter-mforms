@@ -2,10 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mforms/model/element.dart';
 
-part 'form.g.dart';
+part 'form_dynamic.g.dart';
 
 @JsonSerializable()
-class Form extends Equatable {
+class FormDynamic extends Equatable {
   final int id;
   final String name;
   final String description;
@@ -17,18 +17,18 @@ class Form extends Equatable {
   final String? expiredAt;
   final List<Element>? elements;
 
-  const Form({
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.canEdit,
-    required this.canExpired,
-    this.expiredAt,
-    this.elements
-  });
+  const FormDynamic(
+      {required this.id,
+      required this.name,
+      required this.description,
+      required this.canEdit,
+      required this.canExpired,
+      this.expiredAt,
+      this.elements});
 
   @override
   List<Object?> get props => [id];
 
-  factory Form.fromJson(Map<String, dynamic> json) => _$FormFromJson(json);
+  factory FormDynamic.fromJson(Map<String, dynamic> json) =>
+      _$FormDynamicFromJson(json);
 }

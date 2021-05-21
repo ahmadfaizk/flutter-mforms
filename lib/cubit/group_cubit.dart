@@ -24,4 +24,19 @@ class GroupCubit extends Cubit<BaseState> {
       emit(ErrorState(message: 'Error'));
     }
   }
+
+  void subscribeGroup(String code) async {
+    try {
+      emit(LoadingState());
+      var response = await _repository.subscribeGroup(code);
+      if (response.success) {
+        emit(SuccessState<Group>(data: response.data));
+      } else {
+        emit(ErrorState(message: response.message));
+      }
+    } catch (e) {
+      print(e);
+      emit(ErrorState(message: 'Error'));
+    }
+  }
 }
