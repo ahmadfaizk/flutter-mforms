@@ -24,6 +24,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<SplashCubit>(create: (_) => SplashCubit(_repository)),
         BlocProvider<ProfileCubit>(create: (_) => ProfileCubit(_repository)),
         BlocProvider<GroupCubit>(create: (_) => GroupCubit(_repository)),
+        BlocProvider<FormCubit>(create: (_) => FormCubit(_repository)),
+        BlocProvider<FormDetailCubit>(
+            create: (_) => FormDetailCubit(_repository)),
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
@@ -32,7 +35,9 @@ class MyApp extends StatelessWidget {
           GetPage(name: '/', page: () => SplashScreenPage()),
           GetPage(name: 'login', page: () => LoginPage()),
           GetPage(name: 'register', page: () => RegisterPage()),
-          GetPage(name: 'home', page: () => HomePage())
+          GetPage(name: 'home', page: () => HomePage()),
+          GetPage(name: 'form', page: () => FormDetailPage()),
+          GetPage(name: 'form/fill', page: () => FormFillPage()),
         ],
       ),
     );

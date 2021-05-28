@@ -104,13 +104,14 @@ class _GroupPageState extends State<GroupPage> {
               } else if (state is SuccessState<List<Group>>) {
                 var groups = state.data ?? [];
                 return ListView.builder(
-                    shrinkWrap: true,
-                    physics: ClampingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      var group = groups[index];
-                      return generateItemGroub(group);
-                    },
-                    itemCount: groups.length);
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    var group = groups[index];
+                    return generateItemGroub(group);
+                  },
+                  itemCount: groups.length,
+                );
               } else {
                 return Container();
               }

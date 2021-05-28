@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:mforms/model/element.dart';
+import 'package:mforms/model/form_element.dart';
 
 part 'form_dynamic.g.dart';
 
@@ -15,7 +15,7 @@ class FormDynamic extends Equatable {
   final bool canExpired;
   @JsonKey(name: 'expired_at')
   final String? expiredAt;
-  final List<Element>? elements;
+  final List<FormElement>? elements;
 
   const FormDynamic(
       {required this.id,

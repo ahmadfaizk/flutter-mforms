@@ -5,16 +5,17 @@ import 'package:mforms/model/form_type.dart';
 part 'element.g.dart';
 
 @JsonSerializable()
-class Element extends Equatable {
+class FormElement extends Equatable {
   final int id;
   final String label;
   final String key;
   final String placeholder;
   final bool required;
   final List<String> items;
+  @JsonKey(name: 'form_type')
   final FormType formType;
 
-  const Element({
+  const FormElement({
     required this.id,
     required this.label,
     required this.key,
@@ -27,5 +28,6 @@ class Element extends Equatable {
   @override
   List<Object?> get props => [id];
 
-  factory Element.fromJson(Map<String, dynamic> json) => _$ElementFromJson(json);
+  factory FormElement.fromJson(Map<String, dynamic> json) =>
+      _$ElementFromJson(json);
 }

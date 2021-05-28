@@ -73,6 +73,6 @@ class MFormsRepository implements MFormsDataSource {
   @override
   Future<SingleResponse<FormDynamic>> getForm(int id) async {
     var token = await _localDataSource.getToken();
-    throw await _remoteDataSource.getForm(token, id);
+    return await _remoteDataSource.getForm(token, id);
   }
 }

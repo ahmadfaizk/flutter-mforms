@@ -9,10 +9,11 @@ class FormType extends Equatable {
   final String name;
   final String label;
 
-  const FormType({required this.id, required this.name, required this.label,});
+  const FormType({required this.id, required this.name, required this.label});
 
   @override
   List<Object?> get props => [id];
 
-  factory FormType.fromJson(Map<String, dynamic> json) => _$FormTypeFromJson(json);
+  factory FormType.fromJson(Map<String, dynamic> json) =>
+      _$FormTypeFromJson(json);
 }

@@ -64,9 +64,11 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
                 child: Text(
                   'Dynamic Form for Mobile Application',
                   style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ],
