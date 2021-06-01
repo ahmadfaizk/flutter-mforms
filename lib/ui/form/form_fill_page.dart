@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:mforms/form/form_driver.dart';
 import 'package:mforms/model/form_dynamic.dart';
@@ -12,12 +13,14 @@ class FormFillPage extends StatefulWidget {
 
 class _FormFillPageState extends State<FormFillPage> {
   late FormDynamic _formDynamic;
+  late FormDriver _formDriver;
 
   @override
   void initState() {
     super.initState();
     _formDynamic = Get.arguments as FormDynamic;
-    print(_formDynamic);
+    _formDriver = FormDriver(listForm: _formDynamic.elements ?? []);
+    print(_formDynamic.elements);
   }
 
   @override
@@ -29,8 +32,14 @@ class _FormFillPageState extends State<FormFillPage> {
           children: [
             Text(_formDynamic.name),
             Text(_formDynamic.description),
-            FormDriver(listForm: _formDynamic.elements ?? []),
-            ElevatedButton(onPressed: () {}, child: Text('Kirim')),
+            _formDriver,
+            ElevatedButton(
+              onPressed: () {
+                Fluttertoast.showToast(
+                    msg: _formDriver.getFormData().toString());
+              },
+              child: Text('Kirim'),
+            ),
           ],
         ),
       ),

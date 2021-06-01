@@ -2,29 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:mforms/form/form_driver.dart';
 import 'package:mforms/model/form_element.dart';
 
-class InputRadio extends StatefulWidget {
+class InputCheckbox extends StatefulWidget {
   final FormElement formElement;
   final ValueListener valueListener;
   final int index;
 
-  const InputRadio({
+  const InputCheckbox({
     required this.formElement,
     required this.valueListener,
     required this.index,
   });
 
   @override
-  _InputRadioState createState() =>
-      _InputRadioState(formElement, valueListener, index);
+  _InputCheckboxState createState() =>
+      _InputCheckboxState(formElement, valueListener, index);
 }
 
-class _InputRadioState extends State<InputRadio> {
+class _InputCheckboxState extends State<InputCheckbox> {
   final FormElement formElement;
   final ValueListener valueListener;
   final int index;
-  String? _groupValue;
+  List<String> _values = [];
 
-  _InputRadioState(this.formElement, this.valueListener, this.index);
+  _InputCheckboxState(this.formElement, this.valueListener, this.index);
+
+  bool _getCheckboxValue(int index) {
+    return _values.contains(formElement.items[index]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,18 +41,18 @@ class _InputRadioState extends State<InputRadio> {
           physics: ClampingScrollPhysics(),
           itemCount: formElement.items.length,
           itemBuilder: (context, index) {
-            return ListTile(
+            return CheckboxListTile(
+              value: _getCheckboxValue(index),
+              onChanged: (value) {
+                if (value != null && value) {
+                  _values.add(formElement.items[index]);
+                } else {
+                  _values.remove(formElement.items[index]);
+                }
+                setState(() {});
+                valueListener(this.index, _values);
+              },
               title: Text(formElement.items[index]),
-              leading: Radio(
-                value: formElement.items[index],
-                groupValue: _groupValue,
-                onChanged: (value) {
-                  setState(() {
-                    _groupValue = value as String?;
-                  });
-                  valueListener(this.index, value);
-                },
-              ),
             );
           },
         )

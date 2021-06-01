@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mforms/form/widgets/input_checkbox.dart';
+import 'package:mforms/form/widgets/input_date.dart';
+import 'package:mforms/form/widgets/input_dropdown.dart';
+import 'package:mforms/form/widgets/input_number.dart';
+import 'package:mforms/form/widgets/input_radio.dart';
+import 'package:mforms/form/widgets/input_switch.dart';
 import 'package:mforms/form/widgets/input_text.dart';
+import 'package:mforms/form/widgets/input_text_area.dart';
 import 'package:mforms/model/form_data.dart';
 import 'package:mforms/model/form_element.dart';
 
@@ -82,6 +89,10 @@ class FormDriver extends StatelessWidget {
     return _formKey.currentState?.validate() ?? false;
   }
 
+  List<FormData> getFormData() {
+    return _listFormData;
+  }
+
   @override
   Widget build(BuildContext context) {
     for (var form in listForm) {
@@ -109,6 +120,41 @@ class FormDriver extends StatelessWidget {
     switch (formElement.formType.name) {
       case 'text':
         return InputText(
+            formElement: formElement,
+            valueListener: valueListener,
+            index: index);
+      case 'number':
+        return InputNumber(
+            formElement: formElement,
+            valueListener: valueListener,
+            index: index);
+      case 'text_area':
+        return InputTextArea(
+            formElement: formElement,
+            valueListener: valueListener,
+            index: index);
+      case 'switch':
+        return InputSwitch(
+            formElement: formElement,
+            valueListener: valueListener,
+            index: index);
+      case 'radio_button':
+        return InputRadio(
+            formElement: formElement,
+            valueListener: valueListener,
+            index: index);
+      case 'date':
+        return InputDate(
+            formElement: formElement,
+            valueListener: valueListener,
+            index: index);
+      case 'dropdown':
+        return InputDropdown(
+            formElement: formElement,
+            valueListener: valueListener,
+            index: index);
+      case 'check_box':
+        return InputCheckbox(
             formElement: formElement,
             valueListener: valueListener,
             index: index);

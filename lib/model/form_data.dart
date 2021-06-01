@@ -10,4 +10,9 @@ class FormData extends Equatable {
 
   @override
   List<Object?> get props => [];
+
+  @override
+  String toString() {
+    return 'FormData{label: $label, key: $key, value: $value}';
+  }
 }
