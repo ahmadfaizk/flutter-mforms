@@ -15,4 +15,8 @@ class FormData extends Equatable {
   String toString() {
     return 'FormData{label: $label, key: $key, value: $value}';
   }
+
+  Map<String, dynamic> toJson() {
+    return {'label': label, 'key': key, 'value': value};
+  }
 }

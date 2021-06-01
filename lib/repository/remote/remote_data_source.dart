@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
+import 'package:mforms/model/form_data.dart';
 import 'package:mforms/model/models.dart';
 import 'package:mforms/model/multi_response.dart';
 import 'package:mforms/model/single_response.dart';
@@ -95,6 +96,25 @@ class RemoteDataSource {
     Uri url = Uri.parse("$_baseUrl/form/$id");
     var result = await _client
         .get(url, headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+    return SingleResponse<FormDynamic>.fromJson(
+      json.decode(result.body),
+      (json) => FormDynamic.fromJson(json as Map<String, dynamic>),
+    );
+  }
+
+  Future<SingleResponse<FormDynamic>> submitForm(
+      String? token, int id, List<FormData> data) async {
+    Uri url = Uri.parse("$_baseUrl/form/$id");
+    var body = data.map((e) => e.toJson()).toList();
+    var result = await _client.post(
+      url,
+      headers: {
+        HttpHeaders.authorizationHeader: "Bearer $token",
+        HttpHeaders.contentTypeHeader: "application/json",
+      },
+      body: jsonEncode(<String, dynamic>{"data": body}),
+    );
+    print(result.body);
     return SingleResponse<FormDynamic>.fromJson(
       json.decode(result.body),
       (json) => FormDynamic.fromJson(json as Map<String, dynamic>),

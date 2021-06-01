@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<FormCubit>(create: (_) => FormCubit(_repository)),
         BlocProvider<FormDetailCubit>(
             create: (_) => FormDetailCubit(_repository)),
+        BlocProvider<FormFillCubit>(create: (_) => FormFillCubit(_repository)),
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
