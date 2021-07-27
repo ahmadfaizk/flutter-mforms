@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -23,13 +21,14 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
       backgroundColor: Theme.of(context).primaryColor,
       body: BlocListener<SplashCubit, BaseState>(
         listener: (context, state) {
-          print(state);
-          if (state is SuccessState<bool> && state.data != null) {
-            if (state.data!) {
+          if (state is SuccessState<String>) {
+            if (state.data != null) {
               Get.offAllNamed('home');
             } else {
               Get.offAllNamed('login');
             }
+          } else if (state is ErrorState) {
+            Get.offAllNamed('login');
           }
         },
         child: Center(
@@ -43,8 +42,10 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
                   backgroundColor: Colors.white,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: FlutterLogo(
-                      size: 80,
+                    child: Image(
+                      height: 80,
+                      width: 80,
+                      image: AssetImage('assets/images/logo.png'),
                     ),
                   ),
                 ),

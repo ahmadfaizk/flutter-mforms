@@ -30,10 +30,12 @@ class GroupCubit extends Cubit<BaseState> {
       var response = await _repository.subscribeGroup(code);
       if (response.success) {
         emit(SuccessState<Group>(data: response.data));
+        this.getAllGroups();
       } else {
         emit(ErrorState(message: response.message));
       }
     } catch (e) {
+      print(e);
       emit(ErrorState(message: 'Error'));
     }
   }

@@ -25,4 +25,18 @@ class FormFillCubit extends Cubit<BaseState> {
       emit(ErrorState(message: 'Error'));
     }
   }
+
+  void getDetailForm(int id) async {
+    try {
+      emit(LoadingState());
+      var response = await _repository.getForm(id);
+      if (response.success) {
+        emit(SuccessState(data: response.data));
+      } else {
+        emit(ErrorState(message: response.message));
+      }
+    } catch (e) {
+      emit(ErrorState(message: 'Error'));
+    }
+  }
 }

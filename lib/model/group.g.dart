@@ -11,7 +11,9 @@ Group _$GroupFromJson(Map<String, dynamic> json) {
     id: json['id'] as int,
     name: json['name'] as String,
     description: json['description'] as String,
-    author: User.fromJson(json['author'] as Map<String, dynamic>),
+    author: json['author'] == null
+        ? null
+        : User.fromJson(json['author'] as Map<String, dynamic>),
   );
 }
 

@@ -19,6 +19,7 @@ class FormCubit extends Cubit<BaseState> {
         emit(ErrorState(message: response.message));
       }
     } catch (e) {
+      print(e);
       emit(ErrorState(message: 'Error'));
     }
   }

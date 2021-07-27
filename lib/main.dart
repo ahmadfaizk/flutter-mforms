@@ -37,8 +37,8 @@ class MyApp extends StatelessWidget {
           GetPage(name: 'login', page: () => LoginPage()),
           GetPage(name: 'register', page: () => RegisterPage()),
           GetPage(name: 'home', page: () => HomePage()),
-          GetPage(name: 'form', page: () => FormDetailPage()),
-          GetPage(name: 'form/fill', page: () => FormFillPage()),
+          // GetPage(name: 'form', page: () => FormDetailPage()),
+          GetPage(name: 'form/:id', page: () => FormFillPage()),
         ],
       ),
     );

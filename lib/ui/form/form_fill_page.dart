@@ -14,57 +14,84 @@ class FormFillPage extends StatefulWidget {
 }
 
 class _FormFillPageState extends State<FormFillPage> {
-  late FormDynamic _formDynamic;
-  late FormDriver _formDriver;
+  // FormDynamic? _formDynamic;
+  // FormDriver? _formDriver;
 
   @override
   void initState() {
     super.initState();
-    _formDynamic = Get.arguments as FormDynamic;
-    _formDriver = FormDriver(listForm: _formDynamic.elements ?? []);
+    int id = int.parse(Get.parameters['id'] ?? '');
+    BlocProvider.of<FormFillCubit>(context).getDetailForm(id);
+    // _formDynamic = Get.arguments as FormDynamic;
+    //_formDriver = FormDriver(listForm: _formDynamic.elements ?? []);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Isi Form ini')),
-      body: Container(
-        child: ListView(
-          children: [
-            Text(_formDynamic.name),
-            Text(_formDynamic.description),
-            _formDriver,
-            ElevatedButton(
-              onPressed: () {
-                if (_formDriver.validate()) {
-                  BlocProvider.of<FormFillCubit>(context)
-                      .submitForm(_formDynamic.id, _formDriver.getFormData());
-                } else {
-                  Fluttertoast.showToast(msg: 'Form invalid');
-                }
-              },
-              child: Text('Kirim'),
+      appBar: AppBar(title: Text('Isi Formulir')),
+      body: BlocConsumer<FormFillCubit, BaseState>(listener: (context, state) {
+        if (state is SuccessState<String>) {
+          Fluttertoast.showToast(msg: state.data ?? '');
+          Get.back();
+        } else if (state is ErrorState) {
+          Fluttertoast.showToast(msg: state.message);
+        }
+      }, builder: (context, state) {
+        if (state is LoadingState) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (state is SuccessState<FormDynamic>) {
+          var formDynamic = state.data;
+          var formDriver = FormDriver(listForm: formDynamic?.elements ?? []);
+          return Container(
+            child: ListView(
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  child: Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(formDynamic?.name ?? '',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w600)),
+                          Text(
+                            formDynamic?.description ?? '',
+                            style: TextStyle(fontSize: 16),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                formDriver,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (formDriver.validate()) {
+                        BlocProvider.of<FormFillCubit>(context).submitForm(
+                            formDynamic?.id ?? 0, formDriver.getFormData());
+                      } else {
+                        Fluttertoast.showToast(msg: 'Form invalid');
+                      }
+                    },
+                    child: Text('Kirim'),
+                  ),
+                )
+              ],
             ),
-            BlocConsumer<FormFillCubit, BaseState>(
-              builder: (context, state) {
-                if (state is LoadingState) {
-                  return Center(child: CircularProgressIndicator());
-                } else {
-                  return Container();
-                }
-              },
-              listener: (context, state) {
-                if (state is SuccessState) {
-                  Fluttertoast.showToast(msg: state.data);
-                  Get.back();
-                } else if (state is ErrorState) {
-                  Fluttertoast.showToast(msg: state.message);
-                }
-              },
-            ),
-          ],
-        ),
-      ),
+          );
+        }
+        return Container();
+      }),
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:mforms/component/loading_dialog.dart';
 import 'package:mforms/cubit/base_state.dart';
 import 'package:mforms/cubit/cubits.dart';
 import 'package:mforms/model/models.dart';
@@ -25,6 +27,10 @@ class _GroupPageState extends State<GroupPage> {
     } else {
       Fluttertoast.showToast(msg: 'Kode grub harus diisi');
     }
+  }
+
+  void showLoadingDialog() {
+    showDialog(context: context, builder: (context) => LoadingDialog());
   }
 
   void showDialogAddGrub() {
@@ -63,11 +69,44 @@ class _GroupPageState extends State<GroupPage> {
 
   Widget generateItemGroub(Group group) {
     return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Container(
         padding: EdgeInsets.all(8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [Text(group.name)],
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: CircleAvatar(
+                radius: 30,
+                backgroundColor: Colors.blue.shade100,
+                child: Icon(
+                  Icons.supervised_user_circle,
+                  size: 60,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    group.name,
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Dibuat oleh ${group.author?.name}',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    group.description,
+                    style: TextStyle(fontSize: 16),
+                  )
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -94,6 +133,7 @@ class _GroupPageState extends State<GroupPage> {
                 var group = state.data;
                 Fluttertoast.showToast(
                     msg: 'Berhasil menambahkan grub ${group?.name}');
+                Get.back();
               } else if (state is ErrorState) {
                 Fluttertoast.showToast(msg: state.message);
               }

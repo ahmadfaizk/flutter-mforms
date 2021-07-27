@@ -10,7 +10,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  List<Widget> _widgets = [GroupPage(), FormPage(), ProfilePage()];
+  List<String> _titles = ['Grub', 'Form', 'Profil'];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -18,13 +18,35 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  List<Widget> _getWidgets() {
+    return [
+      GroupPage(),
+      FormPage(),
+      ProfilePage(),
+    ];
+  }
+
+  List<Widget> _getAppbarAction(int index) {
+    if (index == 0) {
+      return [
+        IconButton(
+          icon: Icon(Icons.group_add_outlined),
+          tooltip: 'Tambah Grub',
+          onPressed: () {},
+        ),
+      ];
+    } else
+      return [];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mobile Dynamic Form'),
+        title: Text(_titles[_selectedIndex]),
+        // actions: _getAppbarAction(_selectedIndex),
       ),
-      body: _widgets[_selectedIndex],
+      body: _getWidgets()[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,

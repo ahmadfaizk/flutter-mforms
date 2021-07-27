@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/exceptions/exceptions.dart';
 import 'package:mforms/cubit/base_state.dart';
 import 'package:mforms/model/models.dart';
 import 'package:mforms/repository/repositories.dart';
@@ -20,6 +22,10 @@ class ProfileCubit extends Cubit<BaseState> {
         emit(ErrorState(message: response.message));
       }
     } catch (e) {
+      if (e is UnauthorizedException) {
+        await _repository.removeSession();
+        Get.offAllNamed('/');
+      }
       emit(ErrorState(message: 'Error'));
     }
   }

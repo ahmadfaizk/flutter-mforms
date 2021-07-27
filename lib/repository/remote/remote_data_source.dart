@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:get/get_connect/http/src/exceptions/exceptions.dart';
 import 'package:http/http.dart';
 import 'package:mforms/model/form_data.dart';
 import 'package:mforms/model/models.dart';
@@ -14,12 +15,18 @@ class RemoteDataSource {
 
   const RemoteDataSource({required Client client}) : _client = client;
 
+  Map<String, String> _getHeader({String? token}) {
+    return {
+      HttpHeaders.acceptHeader: 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+      HttpHeaders.contentTypeHeader: 'application/json',
+    };
+  }
+
   Future<SingleResponse<Token>> login(String email, String password) async {
     Uri url = Uri.parse("$_baseUrl/login");
-    var result = await _client.post(
-      url,
-      body: {"email": email, "password": password},
-    );
+    var result =
+        await _client.post(url, body: {"email": email, "password": password});
     return SingleResponse<Token>.fromJson(
       json.decode(result.body),
       (json) => Token.fromJson(json as Map<String, dynamic>),
@@ -37,8 +44,6 @@ class RemoteDataSource {
       'email': email,
       'password': password,
       'password_confirmation': password,
-    }, headers: {
-      HttpHeaders.acceptHeader: 'application/json'
     });
     return SingleResponse<Token>.fromJson(
       json.decode(result.body),
@@ -48,8 +53,10 @@ class RemoteDataSource {
 
   Future<SingleResponse<User>> getUser(String? token) async {
     Uri url = Uri.parse("$_baseUrl/user");
-    var result = await _client
-        .get(url, headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+    var result = await _client.get(url, headers: _getHeader(token: token));
+    if (result.statusCode == 401) {
+      throw new UnauthorizedException();
+    }
     return SingleResponse<User>.fromJson(
       json.decode(result.body),
       (json) => User.fromJson(json as Map<String, dynamic>),
@@ -58,8 +65,7 @@ class RemoteDataSource {
 
   Future<MultiResponse<Group>> getAllGroups(String? token) async {
     Uri url = Uri.parse("$_baseUrl/group");
-    var result = await _client
-        .get(url, headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+    var result = await _client.get(url, headers: _getHeader(token: token));
     return MultiResponse<Group>.fromJson(
       json.decode(result.body),
       (json) => Group.fromJson(json as Map<String, dynamic>),
@@ -76,6 +82,7 @@ class RemoteDataSource {
       headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       body: {'code': code},
     );
+    print(json.decode(result.body));
     return SingleResponse<Group>.fromJson(
       json.decode(result.body),
       (json) => Group.fromJson(json as Map<String, dynamic>),
@@ -84,8 +91,7 @@ class RemoteDataSource {
 
   Future<MultiResponse<FormDynamic>> getAllForms(String? token) async {
     Uri url = Uri.parse("$_baseUrl/form");
-    var result = await _client
-        .get(url, headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+    var result = await _client.get(url, headers: _getHeader(token: token));
     return MultiResponse<FormDynamic>.fromJson(
       json.decode(result.body),
       (json) => FormDynamic.fromJson(json as Map<String, dynamic>),
@@ -94,8 +100,7 @@ class RemoteDataSource {
 
   Future<SingleResponse<FormDynamic>> getForm(String? token, int id) async {
     Uri url = Uri.parse("$_baseUrl/form/$id");
-    var result = await _client
-        .get(url, headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+    var result = await _client.get(url, headers: _getHeader(token: token));
     return SingleResponse<FormDynamic>.fromJson(
       json.decode(result.body),
       (json) => FormDynamic.fromJson(json as Map<String, dynamic>),
@@ -108,13 +113,9 @@ class RemoteDataSource {
     var body = data.map((e) => e.toJson()).toList();
     var result = await _client.post(
       url,
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer $token",
-        HttpHeaders.contentTypeHeader: "application/json",
-      },
+      headers: _getHeader(token: token),
       body: jsonEncode(<String, dynamic>{"data": body}),
     );
-    print(result.body);
     return SingleResponse<FormDynamic>.fromJson(
       json.decode(result.body),
       (json) => FormDynamic.fromJson(json as Map<String, dynamic>),

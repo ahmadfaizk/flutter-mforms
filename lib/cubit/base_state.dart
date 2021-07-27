@@ -16,7 +16,7 @@ class SuccessState<T> extends BaseState {
   const SuccessState({this.data});
 
   @override
-  List<Object> get props => [data as Object];
+  List<Object> get props => [];
 }
 
 class ErrorState extends BaseState {
@@ -24,5 +24,5 @@ class ErrorState extends BaseState {
   const ErrorState({required this.message});
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [];
 }

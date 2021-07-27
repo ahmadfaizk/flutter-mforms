@@ -9,7 +9,7 @@ class Group extends Equatable {
   final int id;
   final String name;
   final String description;
-  final User author;
+  final User? author;
 
   const Group({
     required this.id,

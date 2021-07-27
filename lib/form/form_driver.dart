@@ -7,6 +7,7 @@ import 'package:mforms/form/widgets/input_radio.dart';
 import 'package:mforms/form/widgets/input_switch.dart';
 import 'package:mforms/form/widgets/input_text.dart';
 import 'package:mforms/form/widgets/input_text_area.dart';
+import 'package:mforms/form/widgets/input_time.dart';
 import 'package:mforms/model/form_data.dart';
 import 'package:mforms/model/form_element.dart';
 
@@ -107,7 +108,7 @@ class FormDriver extends StatelessWidget {
         itemBuilder: (context, index) {
           var form = listForm[index];
           return Container(
-            margin: EdgeInsets.all(4),
+            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: _generateForm(index, form, updateFormValue),
           );
         },
@@ -145,6 +146,11 @@ class FormDriver extends StatelessWidget {
             index: index);
       case 'date':
         return InputDate(
+            formElement: formElement,
+            valueListener: valueListener,
+            index: index);
+      case 'time':
+        return InputTime(
             formElement: formElement,
             valueListener: valueListener,
             index: index);

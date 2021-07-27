@@ -39,8 +39,8 @@ class _LoginPageState extends State<LoginPage> {
                   backgroundColor: Colors.white,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: FlutterLogo(
-                      size: 80,
+                    child: Image(
+                      image: AssetImage('assets/images/logo.png'),
                     ),
                   ),
                 ),
