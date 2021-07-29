@@ -17,6 +17,9 @@ FormDynamic _$FormDynamicFromJson(Map<String, dynamic> json) {
     elements: (json['elements'] as List<dynamic>?)
         ?.map((e) => FormElement.fromJson(e as Map<String, dynamic>))
         .toList(),
+    data: (json['data'] as List<dynamic>?)
+        ?.map((e) => FormData.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 
@@ -29,4 +32,5 @@ Map<String, dynamic> _$FormDynamicToJson(FormDynamic instance) =>
       'can_expired': instance.canExpired,
       'expired_at': instance.expiredAt,
       'elements': instance.elements,
+      'data': instance.data,
     };

@@ -14,16 +14,11 @@ class FormFillPage extends StatefulWidget {
 }
 
 class _FormFillPageState extends State<FormFillPage> {
-  // FormDynamic? _formDynamic;
-  // FormDriver? _formDriver;
-
   @override
   void initState() {
     super.initState();
     int id = int.parse(Get.parameters['id'] ?? '');
     BlocProvider.of<FormFillCubit>(context).getDetailForm(id);
-    // _formDynamic = Get.arguments as FormDynamic;
-    //_formDriver = FormDriver(listForm: _formDynamic.elements ?? []);
   }
 
   @override
@@ -43,7 +38,8 @@ class _FormFillPageState extends State<FormFillPage> {
         }
         if (state is SuccessState<FormDynamic>) {
           var formDynamic = state.data;
-          var formDriver = FormDriver(listForm: formDynamic?.elements ?? []);
+          var formDriver = FormDriver(
+              listForm: formDynamic?.elements ?? [], data: formDynamic?.data);
           return Container(
             child: ListView(
               children: [

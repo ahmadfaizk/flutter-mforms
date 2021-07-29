@@ -8,16 +8,24 @@ class InputDate extends StatelessWidget {
   final ValueListener valueListener;
   final int index;
   DateTime _selectedDate = DateTime.now();
+  final String? defaultValue;
   final TextEditingController _textController = TextEditingController();
 
   InputDate({
     required this.formElement,
     required this.valueListener,
     required this.index,
+    this.defaultValue,
   });
 
   @override
   Widget build(BuildContext context) {
+    if (defaultValue != null) {
+      _textController.text = defaultValue!;
+      var dates = defaultValue!.split('-');
+      _selectedDate = DateTime(
+          int.parse(dates[0]), int.parse(dates[1]), int.parse(dates[2]));
+    }
     return TextFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: _textController,
@@ -40,12 +48,11 @@ class InputDate extends StatelessWidget {
     DateTime? datePicker = await showDatePicker(
         context: context,
         initialDate: _selectedDate,
-        firstDate: DateTime(1990),
+        firstDate: DateTime(1950),
         lastDate: DateTime(2100));
     if (datePicker != null) {
       _selectedDate = datePicker;
-      String date =
-          "${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}";
+      String date = _selectedDate.toIso8601String().substring(0, 10);
       valueListener(index, date);
       _textController.text = date;
     }

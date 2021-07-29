@@ -1,17 +1,22 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mforms/model/form_type.dart';
+import 'package:mforms/model/source.dart';
 
-part 'element.g.dart';
+part 'form_element.g.dart';
 
 @JsonSerializable()
 class FormElement extends Equatable {
   final int id;
   final String label;
   final String key;
-  final String placeholder;
+  final String? placeholder;
   final bool required;
-  final List<String> items;
+  @JsonKey(name: 'max_length')
+  final int? maxLength;
+  @JsonKey(name: 'min_length')
+  final int? minLength;
+  final List<Source> items;
   @JsonKey(name: 'form_type')
   final FormType formType;
 
@@ -19,15 +24,17 @@ class FormElement extends Equatable {
     required this.id,
     required this.label,
     required this.key,
-    required this.placeholder,
+    this.placeholder,
     required this.required,
     required this.items,
     required this.formType,
+    this.maxLength,
+    this.minLength,
   });
 
   @override
   List<Object?> get props => [id];
 
   factory FormElement.fromJson(Map<String, dynamic> json) =>
-      _$ElementFromJson(json);
+      _$FormElementFromJson(json);
 }

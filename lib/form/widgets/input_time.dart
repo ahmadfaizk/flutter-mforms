@@ -9,15 +9,23 @@ class InputTime extends StatelessWidget {
   final int index;
   TimeOfDay _timeOfDay = TimeOfDay.now();
   final TextEditingController _textController = TextEditingController();
+  final String? defaultValue;
 
   InputTime({
     required this.formElement,
     required this.valueListener,
     required this.index,
+    this.defaultValue,
   });
 
   @override
   Widget build(BuildContext context) {
+    if (defaultValue != null) {
+      _textController.text = defaultValue!;
+      var times = defaultValue!.split(":");
+      _timeOfDay =
+          TimeOfDay(hour: int.parse(times[0]), minute: int.parse(times[1]));
+    }
     return TextFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: _textController,
@@ -48,7 +56,7 @@ class InputTime extends StatelessWidget {
     );
     if (timeOfDay != null) {
       _timeOfDay = timeOfDay;
-      String time = "${timeOfDay.hour}:${timeOfDay.minute}";
+      String time = _timeOfDay.toString().substring(10, 15);
       valueListener(index, time);
       _textController.text = time;
     }
