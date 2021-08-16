@@ -18,8 +18,9 @@ class FormDriver extends StatelessWidget {
   final List<FormElement> listForm;
   final List<FormData>? data;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  FormDriver({required this.listForm, this.data});
   final List<FormData> _listFormData = [];
+
+  FormDriver({required this.listForm, this.data});
 
   void updateFormValue(int index, dynamic value) {
     this._listFormData[index].value = value;

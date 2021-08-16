@@ -41,9 +41,19 @@ class InputText extends StatelessWidget {
                 " minimal ${formElement.minLength} karakter";
           }
         }
+        // if ((formElement.maxLength != null) && value!.isNotEmpty) {
+        //   if (hasNumeric(value)) {
+        //     return formElement.label + " harus berupa text";
+        //   }
+        // }
         return null;
       },
       onChanged: (value) => valueListener(index, value),
     );
+  }
+
+  bool hasNumeric(String value) {
+    RegExp _numeric = RegExp(r'\d');
+    return _numeric.hasMatch(value);
   }
 }
